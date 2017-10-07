@@ -8,6 +8,8 @@ A road is defined by a list of vectors and the amount of lanes to create. The gi
 as the center line of the right-most lane of the road. The first and last vector in the list are
 used to specify the orientation of the road endings. A road is therefore defined by at least 4 vectors.
 
+<p align="center"><img src="./images/road_setup.svg"></p>
+
 ### Connections
 
 Roads can be connected by declaring a connection between individual lanes. The road segments
