@@ -2,11 +2,12 @@
 
 ## Creating custom road layouts
 
-### Road
+### Roads
 
 A road is defined by a list of vectors and the amount of lanes to create. The given list is used
 as the center line of the right-most lane of the road. The first and last vector in the list are
 used to specify the orientation of the road endings. A road is therefore defined by at least 4 vectors.
+Driving direction is fixed according to the order of vectors.
 
 <p align="center"><img src="./images/road_setup.svg"></p>
 
@@ -19,9 +20,10 @@ To create smooth transitions the connection may change the orientation of the co
 ### Vehicles
 
 Custom vehicle types with custom drivers can be declared in 'vehicle_types.py'. Any number
-of these vehicles can be added to the world.
+of these vehicles can be added to the world. Check **Employed traffic models** for an explanation of the
+driver parameters.
 
-### Spawner
+### Spawners
 
 A spawner can be placed anywhere on a road. By default the very beginning of the road is chosen.
 All spawners share the same pool of vehicles.
@@ -36,6 +38,8 @@ and show e.g. how 'Obstacles' are used to create road narrowings.
 self.world = TrafficSimulation.create_test01_world()
 ```
 Currently road layouts containing cycles are not supported.
+
+___
 
 ## Employed traffic models
 
@@ -63,3 +67,7 @@ considered for lane change decisions.
 |   p             | Politeness factor to weigh personal gain against disadvantage of others |
 |   b_safe        | Maximum safe breaking deceleration to impose on back vehicle            |
 |   a_thr         | Threshold to prevent lane changes with little to no gain                |
+
+### Custom
+
+Using only MOBIL vehicles would instantly perform any lane change decisions. Support for delayed lane changes with turn signals was added. Turn signals add more complexity and represent another valuable input feature for deep learning applications. 
