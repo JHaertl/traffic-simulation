@@ -12,7 +12,7 @@ Check the [documentation](doc/documentation.md) for a detailed guide on how to w
 ### Requirements
 
 Python 3.x  
-Numpy and OpenCV (only for rendering)
+numpy and opencv-python (only for rendering)
 
 ### Running the simulation
 
