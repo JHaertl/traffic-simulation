@@ -1,14 +1,13 @@
 # traffic-simulation
 
 Agent-based, space continuous, time discrete traffic simulation.  
-Driver decisions based on [IDM][1] and [MOBIL][2] models.
+Driver decisions based on [IDM][1] and [MOBIL][2] models.  
 Sample generation tool for deep learning applications.
 
 ## Getting Started
 
-The [config](config.ini) file is used to configure the simulation environment.
-Check the [documentation](doc/documentation.md) for a detailed guide on how to
-work with this simulation.
+The [config](config.ini) file is used to configure the simulation environment.  
+Check the [documentation](doc/documentation.md) for a detailed guide on how to work with this simulation.
 
 ### Requirements
 
