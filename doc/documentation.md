@@ -1,6 +1,6 @@
 # Documentation
 
-## Creating custom road layouts
+## Creating custom simulation worlds
 
 ### Roads
 
