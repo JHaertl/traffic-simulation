@@ -1,5 +1,13 @@
 # Documentation
 
+## Interactive controls
+
+WASD or drag with right mouse button to move camera
+Q/E for left and right rotation
+F/R for zoom in and zoom out
+P pause simulation
+M change render mode
+
 ## Creating custom simulation worlds
 
 ### Roads
@@ -70,4 +78,6 @@ considered for lane change decisions.
 
 ### Custom
 
-Using only MOBIL vehicles would instantly perform any lane change decisions. Support for delayed lane changes with turn signals was added. Turn signals add more complexity and represent another valuable input feature for deep learning applications. 
+Using only MOBIL vehicles would instantly perform any lane change decisions.
+Support for delayed lane changes with turn signals was added.
+Turn signals add more complexity and represent another valuable input feature for deep learning applications.
