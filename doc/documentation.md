@@ -2,10 +2,10 @@
 
 ## Interactive controls
 
-WASD or drag with right mouse button to move camera
-Q/E for left and right rotation
-F/R for zoom in and zoom out
-P pause simulation
+WASD or drag with right mouse button to move camera  
+Q/E for left and right rotation  
+F/R for zoom in and zoom out  
+P un-/pause simulation  
 M change render mode
 ESC quit
 
