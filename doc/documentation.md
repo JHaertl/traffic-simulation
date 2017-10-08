@@ -7,6 +7,7 @@ Q/E for left and right rotation
 F/R for zoom in and zoom out
 P pause simulation
 M change render mode
+ESC quit
 
 ## Creating custom simulation worlds
 

@@ -1,15 +1,9 @@
-from random import Random
-from typing import List, Tuple
-
 import cv2
 import numpy as np
-
 import simulation.config_reader as cr
 from simulation.io.camera2d import Camera2D
-from simulation.io.data_io import DataIO
 from simulation.io.input_controller import InputController
 from simulation.io.renderer import Renderer
-from simulation.simulation_object import SimulationObject
 from simulation.vector2 import Vector2
 from simulation.layout.world import World
 
@@ -36,12 +30,12 @@ class OpenCVRenderer(Renderer, InputController):
     def render_surfaces(self, world: World) -> None:
         for road in world.roads:
             for lane in road.lanes:
-                poly = self.apply_transform(lane)
+                poly = Renderer.apply_transform(lane, self.camera)
                 cv2.fillPoly(self.render_image, pts=[poly], color=lane.color)
         for vehicle in world.vehicles:
             if not vehicle.active:
                 continue
-            poly = self.apply_transform(vehicle)
+            poly = Renderer.apply_transform(vehicle, self.camera)
             color = vehicle.color
             if vehicle.TURN_SIGNAL_NONE != vehicle.turn_signal:
                 color = [0, 0.7, 1.0]
@@ -50,7 +44,7 @@ class OpenCVRenderer(Renderer, InputController):
     def render_wireframes(self, world: World) -> None:
         for road in world.roads:
             for lane in road.lanes:
-                poly = self.apply_transform(lane)
+                poly = Renderer.apply_transform(lane, self.camera)
                 cv2.polylines(self.render_image, pts=[poly], isClosed=True, color=lane.color)
                 for node in poly:
                     cv2.circle(self.render_image, center=(int(node[0]), int(node[1])), radius=3, color=lane.color)
@@ -60,7 +54,7 @@ class OpenCVRenderer(Renderer, InputController):
             color = vehicle.color
             if vehicle.TURN_SIGNAL_NONE != vehicle.turn_signal:
                 color = [0, 0.7, 1.0]
-            poly = self.apply_transform(vehicle)
+            poly = Renderer.apply_transform(vehicle, self.camera)
             cv2.polylines(self.render_image, pts=[poly], isClosed=True, color=color)
             for node in poly:
                 cv2.circle(self.render_image, center=(int(node[0]), int(node[1])), radius=3, color=color)
@@ -75,7 +69,7 @@ class OpenCVRenderer(Renderer, InputController):
     def update(self, delta_time: float) -> None:
         display = self.render_image
         camera_pos_string = '(%.2f, %.2f)' % (self.camera.position.x, self.camera.position.y)
-        self.draw_text(display, camera_pos_string, self.camera.viewport.x * 0.05, self.camera.viewport.y)
+        Renderer.draw_text(display, camera_pos_string, self.camera.viewport.x * 0.05, self.camera.viewport.y)
         if self.pause:
             self.draw_text(display, 'P', self.camera.viewport.x * 0.95, self.camera.viewport.y)
         cv2.imshow('Simulation', display)
@@ -126,23 +120,3 @@ class OpenCVRenderer(Renderer, InputController):
             self.mode = (self.mode + 1) % 2
         if k == 112 or k == 1048688:  # P
             self.pause = not self.pause
-
-    def apply_transform(self, obj: SimulationObject) -> np.ndarray:
-        temp = []
-        for vertex in obj.mesh:
-            temp.append(self.camera.apply_view_transform(obj.apply_world_transform(vertex)))
-        poly = self.numpy_from_list(temp)
-        return poly
-
-    def numpy_from_list(self, poly: List[Vector2]) -> np.ndarray:
-        points = []
-        for node in poly:
-            points.append([node.x, node.y])
-        return np.array(points, np.int32)
-
-    def tuple_from_vector(self, vector: Vector2) -> Tuple[int, int]:
-        return int(vector.x), int(vector.y)
-
-    def draw_text(self, image, text, x, y):
-        cv2.putText(image, text, (int(x), int(y)), cv2.FONT_HERSHEY_PLAIN,
-                    fontScale=1, color=(0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
