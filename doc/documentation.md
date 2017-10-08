@@ -5,7 +5,7 @@
 WASD or drag with right mouse button to move camera  
 Q/E for left and right rotation  
 F/R for zoom in and zoom out  
-P pause simulation  
+P un-/pause simulation  
 M change render mode
 
 ## Creating custom simulation worlds
