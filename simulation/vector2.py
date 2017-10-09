@@ -83,14 +83,14 @@ class Vector2:
     def __hash__(self):
         return hash((self.x, self.y))
 
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
-
     def __ne__(self, other):
         return not(self == other)
 
     def __str__(self):
         return "({0}, {1})".format(self.x, self.y)
+
+    def __iter__(self):
+        return (x for x in [self.x, self.y])
 
     def length(self):
         return math.sqrt(self.length_squared())
