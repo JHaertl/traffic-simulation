@@ -1,5 +1,6 @@
 from simulation.simulation_object import SimulationObject
 from simulation.vector2 import Vector2
+import numpy as np
 
 
 class Camera2D(SimulationObject):
@@ -20,8 +21,16 @@ class Camera2D(SimulationObject):
                 self.position.x, self.position.y = self.target.position.x, self.target.position.y
             self.orientation = self.target.orientation - 90.0
 
+    def apply_transform(self, obj: SimulationObject) -> np.ndarray:
+        """Transform a simulation object from it's local coordinate system to this camera's coordinate system"""
+        temp = []
+        for vertex in obj.mesh:
+            temp.append(list(self.apply_view_transform(obj.apply_world_transform(vertex))))
+        poly = np.array(temp, np.int32)
+        return poly
+
     def apply_view_transform(self, vector: Vector2) -> Vector2:
-        """Transform a vector from the worldbla coordinate system to the camera coordinate system of this camera"""
+        """Transform a vector from the world coordinate system to the camera coordinate system of this camera"""
         result = vector.copy()
         result -= self.position
         result.rotate(-self.orientation)
@@ -31,7 +40,7 @@ class Camera2D(SimulationObject):
         return result
 
     def apply_inverse_view_transform(self, vector: Vector2) -> Vector2:
-        """Transform a vector from the camera coordinate system of this camera to the worldbla coordinate system"""
+        """Transform a vector from the camera coordinate system of this camera to the world coordinate system"""
         result = vector.copy()
         result.y = self.viewport.y - result.y
         result -= self.__offset
