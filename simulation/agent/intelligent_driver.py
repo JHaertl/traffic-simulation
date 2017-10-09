@@ -5,8 +5,8 @@ from simulation.agent.driver import Driver
 
 class IntelligentDriver(Driver):
 
-    def __init__(self, min_spacing = 12.0, time_headway = 1.0, comf_break = 3.0, delta = 4,
-                 politeness=0.5, b_safe=3.0, thresh=0.4):
+    def __init__(self, min_spacing: float =12.0, time_headway: float =1.0, comf_break: float =3.0, delta: float=4.0,
+                 politeness: float =0.5, b_safe: float =3.0, thresh: float =0.4):
         super(IntelligentDriver, self).__init__(politeness, b_safe, thresh)
         # IDM parameters (v_0 and a_max are implemented as agent parameters)
         self.min_spacing = min_spacing

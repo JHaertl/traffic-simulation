@@ -1,4 +1,5 @@
 import logging
+import simulation.examples.highway as example
 
 logger = logging.getLogger('simulation')
 logger.setLevel(logging.INFO)
@@ -15,7 +16,8 @@ def main():
     import simulation.config_reader as cr
 
     cr.initialize()
-    simulation = TrafficSimulation()
+    world = example.create_world()
+    simulation = TrafficSimulation(world)
     simulation.simulate()
 
     logger.info('Finished simulation.')
