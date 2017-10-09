@@ -39,15 +39,12 @@ All spawners share the same pool of vehicles.
 
 ### Examples
 
-In 'traffic_simulation.py' various functions are declared to create different worlds.
-To replace the current world with any other world simply save it in the 'world' instance variable
-in the init method of 'TrafficSimulation'. These example worlds depict more complex scenarios
+In 'run_simulation.py' a world is loaded and passed to the simulation. The example worlds depict various scenarios
 and show e.g. how 'Obstacles' are used to create road narrowings.
-```
-self.world = TrafficSimulation.create_test01_world()
-```
-Currently road layouts containing cycles are not supported.
 
+### Restrictions
+
+Currently road layouts containing cycles are not supported.
 ___
 
 ## Employed traffic models
