@@ -1,11 +1,13 @@
 from random import Random
 import numpy as np
+import cv2
 import simulation.config_reader as cr
 from simulation.io.camera2d import Camera2D
 from simulation.io.data_io import DataIO
 from simulation.io.renderer import Renderer
 from simulation.vector2 import Vector2
 from simulation.layout.world import World
+from typing import List, Tuple
 
 
 class RandomSampleRenderer(Renderer):
@@ -29,9 +31,19 @@ class RandomSampleRenderer(Renderer):
         self.rng = Random()
         self.jitter = cr.CONFIG.getboolean('renderer', 'jitter')  # type: bool
         self.jitter_size = (20.0, 4.0, 5.0)  # type: (float, float ,float)
-        self.locations = [self.camera.position, 0]
+        self.locations = [(self.camera.position, 0)]  # type: List[Tuple[Vector2, float]]
 
     def render(self, world: World) -> None:
+        for road in world.roads:
+            for lane in road.lanes:
+                poly = self.camera.apply_transform(lane)
+                cv2.fillPoly(self.data[0], pts=[poly], color=[1.0])
+        for vehicle in world.vehicles:
+            if not vehicle.active:
+                continue
+            poly = self.camera.apply_transform(vehicle)
+            color = [1.0, vehicle.velocity, vehicle.orientation]
+            cv2.fillPoly(self.data[1:3], pts=[poly], color=color)
         for sensor_data in self.data:
             sensor_data.fill(self.background_brightness)
 
@@ -45,7 +57,8 @@ class RandomSampleRenderer(Renderer):
             self.move_camera()
 
     def save_image(self) -> None:
-        pass
+        sample = np.stack(self.data, axis=2)
+        self.writer.add_data(sample)
 
     def move_camera(self) -> None:
         if self.step % self.writer.write_sample_size == 0:
