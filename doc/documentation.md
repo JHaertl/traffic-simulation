@@ -76,6 +76,6 @@ considered for lane change decisions.
 
 ### Custom
 
-Using only MOBIL vehicles would instantly perform any lane change decisions.
+Using only MOBIL, vehicles would instantly perform any lane change decisions.
 Support for delayed lane changes with turn signals was added.
 Turn signals add more complexity and represent another valuable input feature for deep learning applications.
