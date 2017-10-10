@@ -9,7 +9,7 @@ class Camera2D(SimulationObject):
         super(Camera2D, self).__init__()
         self.__viewport = Vector2(width, height)  # type: Vector2
         self.__offset = Vector2(self.__viewport.x/2, self.__viewport.y/2)  # type: Vector2
-        self.__zoom = zoom  # type: float
+        self.zoom = zoom  # type: float
         self.target = target  # type: SimulationObject
         self.distance_threshold = 0.05  # type: float
 
@@ -65,12 +65,3 @@ class Camera2D(SimulationObject):
     def viewport(self, viewport):
         self.__viewport = viewport
         self.__offset = Vector2(self.__viewport.x / 2, self.__viewport.y / 2)
-
-    @property
-    def zoom(self):
-        return self.__zoom
-
-    @zoom.setter
-    def zoom(self, zoom):
-        self.__zoom = zoom
-

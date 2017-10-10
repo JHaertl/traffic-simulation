@@ -13,13 +13,18 @@ class RandomSampleRenderer(Renderer):
     def __init__(self, camera: Camera2D):
         super(RandomSampleRenderer, self).__init__(camera)
         self.background_brightness = 0.0
+        sensors = cr.CONFIG.getint('renderer', 'sensors')
+
+        def sensor_data():
+            return np.full((self.camera.viewport.y, self.camera.viewport.x, 1),
+                           self.background_brightness, np.float32)  # type: np.ndarray
+
+        self.data = [sensor_data() for _ in range(sensors)]
+        self.writer = DataIO(write=self.save_data)  # type: DataIO
         self.save_data = cr.CONFIG.getboolean('renderer', 'save_data')  # type: bool
         self.max_samples = cr.CONFIG.getint('renderer', 'max_samples')
-        self.writer = DataIO(write=self.save_data)  # type: DataIO
         self.save_delay = cr.CONFIG.getfloat('renderer', 'save_delay')  # type: float
         self.timer = 0.0  # type:float
-        self.render_image = np.full((self.camera.viewport.y, self.camera.viewport.x, 3),
-                                    self.background_brightness, np.float32)  # type: np.ndarray
         self.step = 0  # type: int
         self.rng = Random()
         self.jitter = cr.CONFIG.getboolean('renderer', 'jitter')  # type: bool
@@ -27,17 +32,17 @@ class RandomSampleRenderer(Renderer):
         self.locations = [self.camera.position, 0]
 
     def render(self, world: World) -> None:
-        pass
+        for sensor_data in self.data:
+            sensor_data.fill(self.background_brightness)
 
     def update(self, delta_time: float) -> None:
+        super(RandomSampleRenderer, self).update(delta_time)
         self.timer += delta_time
         if self.timer >= self.save_delay:
             self.save_image()
             self.timer = 0.0
             self.step += 1
-            if not self.free_camera:
-                self.move_camera()
-        self.render_image.fill(self.background_brightness)
+            self.move_camera()
 
     def save_image(self) -> None:
         pass

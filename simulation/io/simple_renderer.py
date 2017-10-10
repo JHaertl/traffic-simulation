@@ -59,14 +59,11 @@ class SimpleRenderer(Renderer, InputController):
             Renderer.Mode.WIREFRAME: self.render_wireframes,
         }.get(self.mode, self.render_surfaces)
         render_function(world)
-
-    def update(self, delta_time: float) -> None:
-        display = self.render_image
         camera_pos_string = '(%.2f, %.2f)' % (self.camera.position.x, self.camera.position.y)
-        SimpleRenderer.draw_text(display, camera_pos_string, self.camera.viewport.x * 0.05, self.camera.viewport.y)
+        SimpleRenderer.draw_text(self.render_image, camera_pos_string, self.camera.viewport.x * 0.05, self.camera.viewport.y)
         if self.pause:
-            SimpleRenderer.draw_text(display, 'P', self.camera.viewport.x * 0.95, self.camera.viewport.y)
-        cv2.imshow('Simulation', display)
+            SimpleRenderer.draw_text(self.render_image, 'P', self.camera.viewport.x * 0.95, self.camera.viewport.y)
+        cv2.imshow('Simulation', self.render_image)
         cv2.waitKey(1)
         self.render_image.fill(self.background_brightness)
 

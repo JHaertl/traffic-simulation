@@ -26,6 +26,5 @@ class Renderer:
     def render(self, world: World):
         return
 
-    @abc.abstractmethod
     def update(self, delta_time: float):
-        return
+        self.camera.update(delta_time)
