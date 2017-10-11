@@ -32,11 +32,13 @@ class Vehicle(SimulationObject):
                  max_velocity: float = 10.0,
                  acceleration: float = 0.0,
                  max_acceleration: float = 1.0):
-        super(Vehicle, self).__init__(position, orientation, color, velocity,
-                                      max_velocity, acceleration, max_acceleration, mesh)
+        super(Vehicle, self).__init__(position, orientation, color, velocity, max_velocity,
+                                      acceleration, max_acceleration, mesh)
         self.__target = None  # type: Vector2
         self.trajectory = []  # type: [Vector2]
         self.active = False
+        self.length = self.mesh[0][1] - self.mesh[2][1]  # TODO: length and width specifically for rectangular vehicles!
+        self.width = self.mesh[0][0] - self.mesh[1][0]
         self.driver = IntelligentDriver()
         self.turn_signal = Vehicle.TURN_SIGNAL_NONE
         self.events = []
@@ -191,32 +193,6 @@ class Vehicle(SimulationObject):
         self.lane.vehicles.remove(self)
         self.lane = lane
         lane.add_vehicle(self)
-
-    def calculate_trajectory(self, start, end):
-        return [end]
-        # TODO: needs fixing
-        v = end - start
-        direction = v.copy()
-        direction.normalize()
-        distance = v.length()
-        angle = start.distance_angular_signed(end)
-        angle_sign = angle / abs(angle)
-        direction.rotate(angle_sign * -45)
-        p0 = start
-        p1 = start + direction * distance / 3.0
-        direction.rotate(180)
-        p2 = end + direction * distance / 3.0
-        p3 = end
-        return [Vehicle.bezier(0.0, p0, p1, p2, p3),
-                Vehicle.bezier(0.2, p0, p1, p2, p3),
-                Vehicle.bezier(0.4, p0, p1, p2, p3),
-                Vehicle.bezier(0.6, p0, p1, p2, p3),
-                Vehicle.bezier(0.8, p0, p1, p2, p3),
-                Vehicle.bezier(1.0, p0, p1, p2, p3)]
-
-    @staticmethod
-    def bezier(t, p0, p1, p2, p3):
-        return (1 - t) ** 3 * p0 + 3 * (1 - t) ** 2 * t * p1 + 3 * (1 - t) * t ** 2 * p2 + t ** 3 * p3
 
     @property
     def target(self):
