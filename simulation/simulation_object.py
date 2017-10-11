@@ -1,5 +1,4 @@
 from typing import List, Tuple
-
 from simulation.vector2 import Vector2
 
 
@@ -20,8 +19,8 @@ class SimulationObject(object):
             mesh = [Vector2(0.5, 0.5), Vector2(-0.5, 0.5), Vector2(-0.5, -0.5), Vector2(0.5, -0.5)]
         self.position = Vector2(position.x, position.y)  # type: Vector2
         self.orientation = orientation  # type: float
-        self.color = color  # type: (int, int, int)
-        self.mesh = mesh  # type: [Vector2]
+        self.color = color  # type: Tuple[float, float, float]
+        self.mesh = mesh  # type: List[Vector2]
         self.active = True  # type: bool
         self.__acceleration = acceleration  # type: float
         self.max_acceleration = max_acceleration  # type: float
@@ -31,7 +30,7 @@ class SimulationObject(object):
         SimulationObject.ID += 1
 
     def apply_world_transform(self, vector: Vector2) -> Vector2:
-        """Transform a vector from the local coordinate system of this object to the worldbla coordinate system"""
+        """Transform a vector from the local coordinate system of this object to the world coordinate system"""
         result = vector.copy()
         result.rotate(self.orientation)
         result += self.position

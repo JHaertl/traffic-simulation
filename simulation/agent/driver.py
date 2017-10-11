@@ -1,4 +1,5 @@
 import abc
+from simulation.simulation_object import SimulationObject
 
 
 class Driver:
@@ -11,5 +12,6 @@ class Driver:
         self.thresh = thresh
 
     @abc.abstractmethod
-    def decide_acceleration(self, ego, front, bumper_distance, v_delta):
+    def decide_acceleration(self, ego: SimulationObject, front: SimulationObject,
+                            bumper_distance: float, v_delta: float):
         return

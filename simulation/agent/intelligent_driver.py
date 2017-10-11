@@ -1,6 +1,6 @@
 import math
-
 from simulation.agent.driver import Driver
+from simulation.simulation_object import SimulationObject
 
 
 class IntelligentDriver(Driver):
@@ -14,7 +14,8 @@ class IntelligentDriver(Driver):
         self.comf_break = comf_break
         self.delta = delta
 
-    def decide_acceleration(self, ego, front, bumper_distance, v_delta):
+    def decide_acceleration(self, ego: SimulationObject, front: SimulationObject,
+                            bumper_distance: float, v_delta: float):
         if front is None:
             return ego.max_acceleration
         if bumper_distance <= 0:
