@@ -80,23 +80,25 @@ class Road(SimulationObject):
 
     def create_lane_meshes(self):
         for lane in self.lanes:
-            lane.mesh = []
+            mesh = []
             for node in lane.right:
-                lane.mesh.append(node)
+                mesh.append(node)
             for node in reversed(lane.left):
-                lane.mesh.append(node)
+                mesh.append(node)
+            lane.mesh = mesh
         # TODO: ROAD MESH MAKES NO SENSE ATM
-        self.mesh = []
+        mesh = []
         for lane in self.lanes:
-            self.mesh.append(lane.left[0])
-            self.mesh.append(lane.right[0])
+            mesh.append(lane.left[0])
+            mesh.append(lane.right[0])
         for node in self.lanes[0].right:
-            self.mesh.append(node)
+            mesh.append(node)
         for lane in self.lanes:
-            self.mesh.append(lane.right[-1])
-            self.mesh.append(lane.left[-1])
+            mesh.append(lane.right[-1])
+            mesh.append(lane.left[-1])
         for node in reversed(self.lanes[-1].left):
-            self.mesh.append(node)
+            mesh.append(node)
+        self.mesh = mesh
 
     def get_lane_index(self, lane):
         for i, l in enumerate(self.lanes):

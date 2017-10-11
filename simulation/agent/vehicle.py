@@ -32,16 +32,11 @@ class Vehicle(SimulationObject):
                  max_velocity: float = 10.0,
                  acceleration: float = 0.0,
                  max_acceleration: float = 1.0):
-        super(Vehicle, self).__init__(position, orientation, color, mesh)
-        self.__velocity = velocity  # type: float
-        self.max_velocity = max_velocity  # type: float
-        self.__acceleration = acceleration  # type: float
-        self.max_acceleration = max_acceleration  # type: float
+        super(Vehicle, self).__init__(position, orientation, color, velocity,
+                                      max_velocity, acceleration, max_acceleration, mesh)
         self.__target = None  # type: Vector2
         self.trajectory = []  # type: [Vector2]
         self.active = False
-        self.length = self.mesh[0][1] - self.mesh[2][1]  # TODO: length and width specifically for rectangular vehicles!
-        self.width = self.mesh[0][0] - self.mesh[1][0]
         self.driver = IntelligentDriver()
         self.turn_signal = Vehicle.TURN_SIGNAL_NONE
         self.events = []
@@ -234,25 +229,3 @@ class Vehicle(SimulationObject):
         direction.normalize()
         angle = Vector2(0, 1).distance_angular_signed(direction)
         self.orientation = angle
-
-    @property
-    def velocity(self):
-        return self.__velocity
-
-    @velocity.setter
-    def velocity(self, velocity):
-        self.__velocity = velocity
-        if self.__velocity > self.max_velocity:
-            self.__velocity = self.max_velocity
-        if self.__velocity < 0:
-            self.__velocity = 0
-
-    @property
-    def acceleration(self):
-        return self.__acceleration
-
-    @acceleration.setter
-    def acceleration(self, acceleration):
-        self.__acceleration = acceleration
-        if self.__acceleration > self.max_acceleration:
-            self.__acceleration = self.max_acceleration
